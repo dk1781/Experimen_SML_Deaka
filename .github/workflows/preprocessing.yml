@@ -5,8 +5,8 @@ on:
     branches:
       - main
     paths:
-      - 'rawdata/heart.csv'          # File input di folder rawdata
-      - 'preprocessing/automate_Deaka.py'   # Skrip preprocessing
+      - 'rawdata/heart.csv'          
+      - 'preprocessing/automate_Deaka.py'  
 
 jobs:
   preprocess-data:
