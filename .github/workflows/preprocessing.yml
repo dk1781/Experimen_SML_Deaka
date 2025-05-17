@@ -27,10 +27,9 @@ jobs:
         
     - name: Run preprocessing
       run: |
-        mkdir -p data/processed
         python preprocessing/automate_Deaka.py \
-          --input_path data/raw/rawdata/heart.csv \
-          --output_path data/processed/heart_preprocessed.csv
+          --input_path rawdata/heart.csv \
+          --output_path preprocessing/heart_preprocessed.csv
       
     - name: Upload processed data
       uses: actions/upload-artifact@v3
