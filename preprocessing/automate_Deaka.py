@@ -13,10 +13,9 @@ def preprocessing_data(file_path, output_path):
         numerical_features = df_clean.select_dtypes(include=['float64', 'int64']).columns.tolist()
         categorical_features = df_clean.select_dtypes(include=['object']).columns.tolist()
         
-        # Handle nilai 0 di 'Cholesterol'
+        # Handle nilai 0 di 'Cholesterol' dan RestingBP
         df_clean['Cholesterol'] = df_clean['Cholesterol'].replace(0, np.nan)
         df_clean['RestingBP'] = df_clean['RestingBP'].replace(0, np.nan)
-        df_clean['FastingBS'] = df_clean['FastingBS'].replace(0, np.nan)
         # Isi missing values untuk semua kolom numerik
         for col in numerical_features:
             df_clean[col].fillna(df_clean[col].median(), inplace=True)
