@@ -19,9 +19,9 @@ def preprocessing_data(file_path):
         if col_zero in df_clean.columns:
             df_clean[col_zero] = df_clean[col_zero].replace(0, np.nan)
     
-    # Impute median
+    # Impute mean
     for col in numerical_features:
-        df_clean[col].fillna(df_clean[col].median(), inplace=True)
+        df_clean[col].fillna(df_clean[col].mean(), inplace=True)
     
     # 2. Standardize numerical features (kecuali target)
     if 'HeartDisease' in numerical_features:
