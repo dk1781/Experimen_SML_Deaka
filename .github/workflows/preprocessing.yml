@@ -6,7 +6,7 @@ on:
       - main
     paths:
       - 'rawdata/heart.csv'
-      - 'preprocessing/automate_Deaka'
+      - 'preprocessing/automate_Deaka.py'
 
 jobs:
   preprocess-data:
@@ -28,7 +28,7 @@ jobs:
     - name: Run preprocessing
       run: |
         mkdir -p data/processed
-        python preprocessing/automate_Deaka \
+        python preprocessing/automate_Deaka.py \
           --input_path data/raw/rawdata/heart.csv \
           --output_path data/processed/heart_preprocessed.csv
       
