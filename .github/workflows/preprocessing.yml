@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - 'rawdata/*heart.csv'
+      - 'rawdata/heart.csv'
       - 'preprocessing/automate_Deaka'
 
 jobs:
@@ -29,8 +29,8 @@ jobs:
       run: |
         mkdir -p data/processed
         python preprocessing/automate_Deaka \
-          --input_path data/raw/Medicaldataset.csv \
-          --output_path data/processed/cleaned_data.csv
+          --input_path data/raw/rawdata/heart.csv \
+          --output_path data/processed/heart_preprocessed.csv
       
     - name: Upload processed data
       uses: actions/upload-artifact@v3
