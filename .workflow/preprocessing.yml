@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - 'data/raw/*.csv'
+      - 'rawdata/*heart.csv'
       - 'preprocessing/automate_Deaka'
 
 jobs:
