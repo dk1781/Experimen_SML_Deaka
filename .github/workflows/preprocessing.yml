@@ -8,7 +8,7 @@ on:
       - 'rawdata/heart.csv'          
       - 'preprocessing/automate_Deaka.py'  
       - ".github/workflows"
-      workflow_dispatch:
+    workflow_dispatch:
 
 jobs:
   preprocess-data:
