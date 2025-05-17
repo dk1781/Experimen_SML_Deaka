@@ -30,7 +30,7 @@ jobs:
       run: |
         python preprocessing/automate_Deaka.py \
           --input_path rawdata/heart.csv \         
-          --output_path preprocessing/heart_preprocessed.csv  \
+          --output_path preprocessing/heart_preprocessed.csv  
     
     - name: Upload processed data
       uses: actions/upload-artifact@v4
