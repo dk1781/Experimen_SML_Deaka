@@ -15,7 +15,8 @@ def preprocessing_data(file_path, output_path):
         
         # Handle nilai 0 di 'Cholesterol'
         df_clean['Cholesterol'] = df_clean['Cholesterol'].replace(0, np.nan)
-        
+        df_clean['RestingBP'] = df_clean['RestingBP'].replace(0, np.nan)
+        df_clean['FastingBS'] = df_clean['FastingBS'].replace(0, np.nan)
         # Isi missing values untuk semua kolom numerik
         for col in numerical_features:
             df_clean[col].fillna(df_clean[col].median(), inplace=True)
