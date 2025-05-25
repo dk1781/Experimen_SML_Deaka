@@ -25,19 +25,15 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install pandas scikit-learn
+        pip install pandas scikit-learn mlflow==2.19.0
 
     - name: Run preprocessing
       shell: bash
       run: |
-        echo "Running automate_Deaka.py with args:"
-        echo "--input_path rawdata/heart.csv --output_path preprocessing/heart_preprocessed.csv"
-        python preprocessing/automate_Deaka.py \
-          --input_path rawdata/heart.csv \
-          --output_path preprocessing/heart_preprocessed.csv
-
+        python preprocessing/automate_Deaka.py 
+        
     - name: Upload processed data
       uses: actions/upload-artifact@v4
       with:
         name: processed-data
-        path: preprocessing/heart_preprocessed.csv
+        path: preprocessing/outputs/
