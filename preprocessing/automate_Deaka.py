@@ -4,8 +4,9 @@ import argparse
 import os
 import sys
 from sklearn.preprocessing import StandardScaler, LabelEncoder
+from sklearn.model_selection import train_test_split
 
-def preprocessing_data(file_path):
+def preprocessing_data(file_path, output_path):
     # Baca data
     df = pd.read_csv(file_path)
     
@@ -33,33 +34,43 @@ def preprocessing_data(file_path):
     for col in categorical_features:
         le = LabelEncoder()
         df_clean[col] = le.fit_transform(df_clean[col].astype(str))
+
+    #4 Split Dataset
+    X=df_clean.drop(columns=['HeartDisease'])
+    y=df_clean['HeartDisease']
+
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+    output_path = "dataset_preprocessing"
+    if not os.path.exists(output_path):
+        os.makedirs(output_path)
+        
+    X_train.to_csv(os.path.join(output_path, "X_train.csv"), index=False)
+    X_test.to_csv(os.path.join(output_path, "X_test.csv"), index=False)
+    y_train.to_csv(os.path.join(output_path, "y_train.csv"), index=False)
+    y_test.to_csv(os.path.join(output_path, "y_test.csv"), index=False)
     
-    return df_clean
+    return df_clean,X_train, X_test, y_train, y_test
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(
-        description="Automate preprocessing heart disease dataset"
-    )
-    parser.add_argument(
-        '--input_path', '-i', type=str, required=True,
-        help='Path ke file CSV mentah (raw)'
-    )
-    parser.add_argument(
-        '--output_path', '-o', type=str, required=True,
-        help='Path untuk menyimpan file CSV hasil preprocessing'
-    )
-    args = parser.parse_args()
-    
-    # Validasi input
-    if not os.path.isfile(args.input_path):
-        print(f"Error: input file '{args.input_path}' tidak ditemukan.", file=sys.stderr)
-        sys.exit(1)
-    
-    # Buat direktori output jika belum ada
-    out_dir = os.path.dirname(args.output_path)
-    if out_dir and not os.path.exists(out_dir):
-        os.makedirs(out_dir)
-    
-    # Jalankan preprocessing
-    df = preprocessing_data(args.input_path)
-    df.to_csv(args.output_path, index=False)
+    input_file = "rawdata/heart.csv"
+    output_path = "preprocessing/outputs"
+
+    try:
+        mlflow.set_tracking_uri("file:./mlruns")
+
+        with mlflow.start_run(run_name="Preprocessing_Run"):
+            df_clean, X_train, X_test, y_train, y_test = preprocess_dataset(input_file, output_path)
+
+            mlflow.log_param("input_file", input_file)
+            mlflow.log_param("output_path", output_path)
+            mlflow.log_metric("rows_after_cleaning", df_clean.shape[0])
+
+            mlflow.log_artifact(os.path.join(output_path, 'X_train.csv'))
+            mlflow.log_artifact(os.path.join(output_path, 'X_test.csv'))
+            mlflow.log_artifact(os.path.join(output_path, 'y_train.csv'))
+            mlflow.log_artifact(os.path.join(output_path, 'y_test.csv'))
+   
+
+    except Exception as err:
+        print(f"[ERROR] Tahap Preprocessing failed: {err}")
